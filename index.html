@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#10101a">
-  <meta name="description" content="Al Awali Store — gaming gear and accessories">
-  <title>Al Awali Store | متجر العوالي</title>
+  <meta name="description" content="MR Store — gaming gear and accessories">
+  <title>MR Store | متجر MR</title>
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="#" aria-label="Al Awali Store home"><span class="brand-mark">A</span><span>AL AWALI <b>STORE</b></span></a>
+    <a class="brand" href="#" aria-label="MR Store home"><span class="brand-mark">MR</span><span>MR <b>STORE</b></span></a>
     <nav><a href="#products" data-i18n="shop">المتجر</a><a href="#about" data-i18n="about">عن المتجر</a></nav>
     <div class="top-actions">
       <button id="languageBtn" class="ghost" type="button">English</button>
@@ -38,14 +38,14 @@
     <section class="banner" id="about"><div class="banner-icon">✦</div><div><span class="eyebrow" data-i18n="built">صُنع للاعبين</span><h2 data-i18n="bannerTitle">معداتك. لعبتك. مستواك.</h2><p data-i18n="bannerText">متجر تجريبي قابل للتطوير وإضافة بوابة دفع وشحن حقيقيين لاحقًا.</p></div><a href="#products" class="banner-arrow" aria-label="Shop">↙</a></section>
   </main>
 
-  <footer><a class="brand" href="#"><span class="brand-mark">A</span><span>AL AWALI <b>STORE</b></span></a><p data-i18n="footer">متجر القيمنق الخاص بك — نسخة تجريبية أولية.</p><small>© <span id="year"></span> Al Awali Store</small></footer>
+  <footer><a class="brand" href="#"><span class="brand-mark">MR</span><span>MR <b>STORE</b></span></a><p data-i18n="footer">متجر القيمنق الخاص بك — نسخة تجريبية أولية.</p><small>© <span id="year"></span> MR Store. جميع الحقوق محفوظة. | All rights reserved.</small><small>عمل مروان الغامدي | Created by Marwan Al-Ghamdi</small></footer>
 
   <div id="cartOverlay" class="overlay" hidden>
     <button class="scrim" id="closeCartScrim" aria-label="Close cart"></button>
     <aside class="cart-panel" aria-label="Shopping cart">
       <div class="panel-heading"><h2 data-i18n="yourCart">سلة مشترياتك</h2><button id="closeCart" class="icon-button" aria-label="Close">✕</button></div>
       <div id="cartItems" class="cart-items"></div>
-      <div class="cart-total"><span data-i18n="total">الإجمالي</span><strong id="cartTotal">0 ر.س</strong></div>
+      <div class="coupon-box"><label for="couponCode">كود الخصم / Discount code</label><div class="coupon-controls"><input id="couponCode" type="text" placeholder="MR10" maxlength="30"><button id="applyCoupon" type="button">تطبيق / Apply</button></div><p id="couponMessage" role="status"></p></div><div class="cart-total"><span>قيمة الخصم / Discount</span><strong id="cartDiscount">0 ر.س</strong></div><div class="cart-total"><span data-i18n="total">الإجمالي بعد الخصم / Total</span><strong id="cartTotal">0 ر.س</strong></div>
       <form id="checkoutForm" class="checkout-form">
         <h3 data-i18n="checkout">إتمام الطلب التجريبي</h3>
         <label><span data-i18n="name">الاسم</span><input name="name" required minlength="2" maxlength="100" autocomplete="name"></label>

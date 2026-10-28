@@ -4,3 +4,14 @@
 body[dir="ltr"]{font-family:Inter,"IBM Plex Sans Arabic",sans-serif}body[dir="ltr"] .hero h1{letter-spacing:-1.5px}
 @media(max-width:900px){.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding-inline:6vw;min-height:430px}.hero-art{min-height:280px}.controller{font-size:150px}.section-heading{align-items:start;flex-direction:column}.filters{width:100%}.filters input{flex:1;min-width:0}.filters select{max-width:48%}}
 @media(max-width:600px){.topbar{height:65px;padding-inline:14px}.topbar nav{display:none}.brand{font-size:11px}.brand-mark{width:30px;height:30px}.top-actions{gap:6px}.ghost,.cart-button{padding:8px;font-size:12px}.hero{grid-template-columns:1fr;padding-top:42px;padding-bottom:25px}.hero-art{min-height:220px;grid-row:1}.controller{font-size:130px}.orbit-one{width:250px;height:120px}.orbit-two{width:280px;height:150px}.tag-one{right:8%}.tag-two{left:8%}.hero h1{font-size:44px}.hero-stats{margin-top:25px}.section{padding-block:45px}.product-grid{gap:10px}.product-visual{height:125px;font-size:52px}.product-info{padding:12px}.product-info h3{font-size:14px}.product-info p{font-size:11px}.product-bottom{align-items:start;flex-direction:column}.add-button{width:100%}.banner{margin-bottom:40px;padding:22px;gap:12px}.banner h2{font-size:20px}.banner p{font-size:12px}footer{flex-wrap:wrap}footer p{order:3;width:100%}}
+
+/* MR Store product images */
+.product-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 12px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}

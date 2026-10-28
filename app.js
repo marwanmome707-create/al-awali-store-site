@@ -1,5 +1,5 @@
 const $ = (selector) => document.querySelector(selector);
-const state = { lang: "ar", products: [], cart: readCart() };
+const state = { lang: "ar", products: [], cart: readCart(), coupon: "" };
 const translations = {
   ar: {
     shop:"المتجر",about:"عن المتجر",cart:"السلة",eyebrow:"جهّز نفسك للفوز",heroTitle:"ارفع مستوى<br><span>تجربة القيمنق</span>",heroText:"إكسسوارات، ملحقات، وباقات للاعبين — كل تجهيزاتك في مكان واحد.",browse:"تصفح المنتجات",productsLabel:"منتجات للبدء",onlineLabel:"تسوق أونلاين",curated:"اختيارات اللاعبين",featured:"منتجات مميزة",search:"ابحث عن منتج...",all:"كل المنتجات",pc:"الكمبيوتر وقطعه",chairs:"الكراسي والمكاتب",network:"الشبكات والإنترنت",streaming:"البث وصناعة المحتوى",accessories:"الإكسسوارات",consoles:"الأجهزة والملحقات",digital:"رقمي",bundles:"الباقات",built:"صُنع للاعبين",bannerTitle:"معداتك. لعبتك. مستواك.",bannerText:"متجر تجريبي قابل للتطوير وإضافة بوابة دفع وشحن حقيقيين لاحقًا.",footer:"متجر القيمنق الخاص بك — نسخة تجريبية أولية.",yourCart:"سلة مشترياتك",total:"الإجمالي",checkout:"إتمام الطلب التجريبي",name:"الاسم",phone:"رقم الجوال",email:"البريد الإلكتروني (اختياري)",placeOrder:"إرسال الطلب التجريبي",paymentNote:"تنبيه: هذا نموذج تجريبي؛ لن يتم خصم أي مبلغ. الدفع الإلكتروني غير مربوط بعد.",add:"أضف للسلة",emptyCart:"سلتك فارغة. أضف بعض المنتجات أولًا.",emptyProducts:"لا توجد منتجات مطابقة للبحث.",added:"تمت إضافة المنتج إلى السلة.",orderSuccess:"تم تسجيل الطلب التجريبي برقم",orderNoPayment:"لم يتم خصم أي مبلغ. يلزم ربط بوابة دفع قبل البيع الفعلي.",stock:"المخزون",categories:{pc:"كمبيوتر وقطع",accessories:"إكسسوارات",consoles:"منصات وملحقات",digital:"منتجات رقمية",chairs:"كراسي ومكاتب",network:"شبكات",streaming:"بث وصناعة محتوى",bundles:"باقات"},networkError:"تعذر الاتصال بالخادم. تأكد أن المتجر يعمل.",orderError:"تعذر إنشاء الطلب. حاول مرة أخرى."
@@ -34,7 +34,7 @@ function renderProducts() {
   const found = state.products.filter(p => (category === "all" || p.category === category) && `${p.nameAr} ${p.nameEn} ${p.descriptionAr} ${p.descriptionEn}`.toLocaleLowerCase().includes(query));
   $("#productGrid").innerHTML = found.length ? found.map(p => `
     <article class="product-card">
-      <div class="product-visual"><span>${p.emoji}</span></div>
+      <div class="product-visual">${p.image ? `<img src="${safeText(p.image)}" alt="${safeText(productName(p))}" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.style.display=\'grid\'">` : ""}<span style="${p.image ? "display:none" : "display:grid"}">${p.emoji}</span></div>
       <div class="product-info">
         <span class="category-label">${safeText(t("categories")[p.category] || p.category)}</span>
         <h3>${safeText(productName(p))}</h3>
@@ -47,12 +47,39 @@ function cartEntries() { return Object.entries(state.cart).map(([id, quantity]) 
 function renderCart() {
   const entries = cartEntries();
   const count = entries.reduce((sum, x) => sum + x.quantity, 0);
-  const total = entries.reduce((sum, x) => sum + x.product.price * x.quantity, 0);
+  const subtotal = entries.reduce((sum, x) => sum + x.product.price * x.quantity, 0);
+  const discount = state.coupon === "MR10" ? subtotal * 0.10 : 0;
+  const total = subtotal - discount;
+  $("#cartDiscount").textContent = money(discount);
   $("#cartCount").textContent = count;
   $("#cartTotal").textContent = money(total);
   $("#cartItems").innerHTML = entries.length ? entries.map(({product:p,quantity:q}) => `
     <div class="cart-line"><span class="cart-emoji">${p.emoji}</span><div class="cart-line-main"><strong>${safeText(productName(p))}</strong><small>${money(p.price)} × ${q}</small><div class="quantity-controls"><button data-qty="${p.id}" data-delta="-1" aria-label="Decrease">−</button><span>${q}</span><button data-qty="${p.id}" data-delta="1" aria-label="Increase">+</button><button class="remove-button" data-remove="${p.id}">${state.lang === "ar" ? "حذف" : "Remove"}</button></div></div></div>`).join("") : `<div class="empty-state">${safeText(t("emptyCart"))}</div>`;
 }
+$("#applyCoupon").addEventListener("click", applyCoupon);
+$("#couponCode").addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    applyCoupon();
+  }
+});
+
+function applyCoupon() {
+  const input = $("#couponCode");
+  const message = $("#couponMessage");
+  const code = input.value.trim().toUpperCase();
+  if (code === "MR10") {
+    state.coupon = code;
+    message.textContent = state.lang === "ar" ? "تم تطبيق خصم 10% بنجاح" : "10% discount applied successfully";
+    message.style.color = "#a3e635";
+  } else {
+    state.coupon = "";
+    message.textContent = state.lang === "ar" ? "كود الخصم غير صحيح" : "Invalid discount code";
+    message.style.color = "#ec4899";
+  }
+  renderCart();
+}
+
 function addToCart(id) {
   const p = state.products.find(x => x.id === id);
   if (!p) return;
