@@ -97,15 +97,9 @@ $("#checkoutForm").addEventListener("submit", async e => {
   finally { button.disabled = false; button.textContent = t("placeOrder"); }
 });
 
-async function init() {
+function init() {
   $("#year").textContent = new Date().getFullYear();
-  try {
-    const response = await fetch("/api/products");
-    if (!response.ok) throw new Error("Products request failed");
-    state.products = await response.json();
-    applyLanguage();
-  } catch {
-    $("#productGrid").innerHTML = `<div class="empty-state">${safeText(t("networkError"))}</div>`;
-  }
+  state.products = Array.isArray(window.STORE_PRODUCTS) ? window.STORE_PRODUCTS : [];
+  applyLanguage();
 }
 init();
